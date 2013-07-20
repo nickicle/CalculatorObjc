@@ -7,8 +7,22 @@
 //
 
 #import "MainViewController.h"
+#import <QuartzCore/QuartzCore.h>
+
+typedef NS_ENUM(NSInteger, OperatorType){
+    OperatorTypeAdd = 0,
+    OperatorTypeSubtract,
+    OperatorTypeDivide,
+    OperatorTypeMultiply
+};
 
 @interface MainViewController ()
+@property (nonatomic, strong) NSMutableString *leftOperand;
+@property (nonatomic, strong) NSMutableString *rightOperand;
+@property (nonatomic, assign) BOOL hasOperator;
+@property (weak, nonatomic) IBOutlet UILabel *outputTextField;
+@property (nonatomic, assign) OperatorType currentOperator;
+@property (nonatomic, assign) BOOL hasTappedEqualButton;
 
 @end
 
@@ -17,6 +31,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self clearTapped:nil];
+    self.outputTextField.layer.cornerRadius=6.0;
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -38,6 +54,103 @@
     if ([[segue identifier] isEqualToString:@"showAlternate"]) {
         [[segue destinationViewController] setDelegate:self];
     }
+}
+- (IBAction)clearTapped:(id)sender {
+    self.outputTextField.text = @"0";
+    self.hasOperator = NO;
+    self.leftOperand = [NSMutableString new];
+    self.rightOperand = [NSMutableString new];
+
+}
+-(void)appendValue:(NSInteger)value{
+    NSString *stringValue = [NSString stringWithFormat:@"%i", value];
+    if (self.hasOperator) {
+        [self.rightOperand appendString:stringValue];
+        self.outputTextField.text=self.rightOperand;
+    } else {
+        [self.leftOperand appendString:stringValue];
+        self.outputTextField.text=self.leftOperand;
+    }
+    
+}
+- (IBAction)numberButtonTapped:(UIButton *)sender {
+    [self appendValue:sender.tag];
+}
+
+
+- (IBAction)equalButton:(id)sender {
+    NSLog(@"=");
+    int leftNumber = [self.leftOperand doubleValue];
+    int rightNumber = [self.rightOperand doubleValue];
+    int total = 0;
+    NSLog(@"left number is %i", leftNumber);
+    NSLog(@"right number is %i", rightNumber);
+    
+    switch (self.currentOperator) {
+        case OperatorTypeAdd:
+            total = leftNumber + rightNumber;
+            break;
+        case OperatorTypeSubtract:
+            total = leftNumber - rightNumber;
+            break;
+        case OperatorTypeDivide:
+            total = leftNumber/rightNumber;
+            break;
+        case OperatorTypeMultiply:
+            total = leftNumber * rightNumber;
+            break;
+    }
+    
+    self.outputTextField.text = [NSString stringWithFormat:@"%i", total];
+    self.leftOperand = [NSMutableString stringWithString:self.outputTextField.text];
+}
+
+- (void)configureOperator:(OperatorType)operatorType {
+    self.hasOperator = YES;
+    self.currentOperator = operatorType;
+    self.rightOperand = [NSMutableString new];
+}
+
+- (IBAction)plusButton:(id)sender {
+     NSLog(@"+");
+    [self configureOperator:OperatorTypeAdd];
+}
+
+- (IBAction)subtractButton:(id)sender {
+    NSLog(@"-");
+    [self configureOperator:OperatorTypeSubtract];
+}
+
+- (IBAction)multiplybutton:(id)sender {
+     NSLog(@"X" );
+    [self configureOperator:OperatorTypeMultiply];
+}
+
+- (IBAction)divideButton:(id)sender {
+     NSLog(@"/");
+    [self configureOperator:OperatorTypeDivide];
+}
+- (IBAction)plusMinusButton:(id)sender {
+     NSLog(@"+-");
+    NSInteger textNumber = [self.outputTextField.text integerValue];
+    textNumber = textNumber * -1;
+    self.outputTextField.text = [NSString stringWithFormat:@"%i",textNumber];
+    self.leftOperand = [self.outputTextField.text mutableCopy];
+}
+- (IBAction)pointButton:(id)sender {
+     NSLog(@".");
+}
+- (IBAction)memoryClearButton:(id)sender {
+     NSLog(@"mc");
+}
+- (IBAction)addMemoryButton:(id)sender {
+     NSLog(@"m+");
+}
+- (IBAction)subtractMemoryButton:(id)sender {
+     NSLog(@"m-");
+}
+- (IBAction)recallMemoryButton:(id)sender {
+     NSLog(@"mr");
 }
 
 @end
