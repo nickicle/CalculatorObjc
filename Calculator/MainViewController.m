@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, OperatorType){
 @property (weak, nonatomic) IBOutlet UILabel *outputTextField;
 @property (nonatomic, assign) OperatorType currentOperator;
 @property (nonatomic, assign) BOOL hasTappedEqualButton;
+@property (nonatomic, assign) NSInteger memoryValue;
 
 @end
 
@@ -80,9 +81,9 @@ typedef NS_ENUM(NSInteger, OperatorType){
 
 - (IBAction)equalButton:(id)sender {
     NSLog(@"=");
-    int leftNumber = [self.leftOperand doubleValue];
-    int rightNumber = [self.rightOperand doubleValue];
-    int total = 0;
+    NSInteger leftNumber = [self.leftOperand integerValue];
+    NSInteger rightNumber = [self.rightOperand integerValue];
+    NSInteger total = 0;
     NSLog(@"left number is %i", leftNumber);
     NSLog(@"right number is %i", rightNumber);
     
@@ -94,7 +95,11 @@ typedef NS_ENUM(NSInteger, OperatorType){
             total = leftNumber - rightNumber;
             break;
         case OperatorTypeDivide:
-            total = leftNumber/rightNumber;
+            if (rightNumber!=0) {
+               total = leftNumber/rightNumber;
+            } else {
+                self.outputTextField.text = @"Error";
+            }
             break;
         case OperatorTypeMultiply:
             total = leftNumber * rightNumber;
@@ -116,6 +121,7 @@ typedef NS_ENUM(NSInteger, OperatorType){
     [self configureOperator:OperatorTypeAdd];
 }
 
+
 - (IBAction)subtractButton:(id)sender {
     NSLog(@"-");
     [self configureOperator:OperatorTypeSubtract];
@@ -130,6 +136,7 @@ typedef NS_ENUM(NSInteger, OperatorType){
      NSLog(@"/");
     [self configureOperator:OperatorTypeDivide];
 }
+
 - (IBAction)plusMinusButton:(id)sender {
      NSLog(@"+-");
     NSInteger textNumber = [self.outputTextField.text integerValue];
@@ -137,20 +144,47 @@ typedef NS_ENUM(NSInteger, OperatorType){
     self.outputTextField.text = [NSString stringWithFormat:@"%i",textNumber];
     self.leftOperand = [self.outputTextField.text mutableCopy];
 }
+
 - (IBAction)pointButton:(id)sender {
      NSLog(@".");
 }
+
 - (IBAction)memoryClearButton:(id)sender {
      NSLog(@"mc");
+    self.memoryValue = 0;
+    self.leftOperand = [NSMutableString new];
+    self.rightOperand = [NSMutableString new];
 }
+
 - (IBAction)addMemoryButton:(id)sender {
      NSLog(@"m+");
+    self.memoryValue += [self.outputTextField.text integerValue];
+    self.leftOperand = [NSMutableString new];
+    self.rightOperand = [NSMutableString new];
+
 }
+
 - (IBAction)subtractMemoryButton:(id)sender {
      NSLog(@"m-");
+    if (self.memoryValue != 0){
+        self.memoryValue -= [self.outputTextField.text integerValue];
+ 
+    }
+    self.leftOperand = [NSMutableString new];
+    self.rightOperand = [NSMutableString new];
 }
+
 - (IBAction)recallMemoryButton:(id)sender {
      NSLog(@"mr");
+    self.outputTextField.text = [NSString stringWithFormat:@"%i",self.memoryValue];
+    if (_hasOperator == TRUE) {
+        self.rightOperand = [NSString stringWithFormat:@"%i",self.memoryValue];
+    }else if(_hasOperator == FALSE) {
+        self.leftOperand = [NSString stringWithFormat:@"%i",self.memoryValue];
+    }else{
+        self.leftOperand = [NSMutableString new];
+        self.rightOperand = [NSMutableString new];
+    }
 }
 
 @end
