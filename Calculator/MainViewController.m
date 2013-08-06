@@ -24,6 +24,7 @@ typedef NS_ENUM(NSInteger, OperatorType){
 @property (nonatomic, assign) OperatorType currentOperator;
 @property (nonatomic, assign) BOOL hasTappedEqualButton;
 @property (nonatomic, assign) NSInteger memoryValue;
+@property (nonatomic, assign) BOOL hasNumberButtonTapped;
 
 @end
 
@@ -76,6 +77,7 @@ typedef NS_ENUM(NSInteger, OperatorType){
 }
 - (IBAction)numberButtonTapped:(UIButton *)sender {
     [self appendValue:sender.tag];
+    self.hasNumberButtonTapped = YES;
 }
 
 
@@ -103,6 +105,9 @@ typedef NS_ENUM(NSInteger, OperatorType){
             break;
         case OperatorTypeMultiply:
             total = leftNumber * rightNumber;
+            if (rightNumber == 0) {
+                total = leftNumber * leftNumber;
+            }
             break;
     }
     
@@ -149,11 +154,14 @@ typedef NS_ENUM(NSInteger, OperatorType){
      NSLog(@".");
 }
 
+
+
 - (IBAction)memoryClearButton:(id)sender {
      NSLog(@"mc");
      self.memoryValue = 0;
      self.leftOperand = [NSMutableString new];
      self.rightOperand = [NSMutableString new];
+
 }
 
 - (IBAction)addMemoryButton:(id)sender {
@@ -161,6 +169,7 @@ typedef NS_ENUM(NSInteger, OperatorType){
      self.memoryValue += [self.outputTextField.text integerValue];
      self.leftOperand = [NSMutableString new];
      self.rightOperand = [NSMutableString new];
+
 
 }
  
@@ -178,9 +187,15 @@ typedef NS_ENUM(NSInteger, OperatorType){
      NSLog(@"mr");
      self.outputTextField.text = [NSString stringWithFormat:@"%i",self.memoryValue];
      if (self.hasOperator ) {
-        self.rightOperand = [NSString stringWithFormat:@"%i",self.memoryValue];
+        self.rightOperand = [[NSString stringWithFormat:@"%i",self.memoryValue] mutableCopy];
      }else {
-         self.leftOperand = [NSString stringWithFormat:@"%i",self.memoryValue];
+         self.leftOperand = [[NSString stringWithFormat:@"%i",self.memoryValue] mutableCopy];
      }
+    if (self.hasNumberButtonTapped == YES){
+        self.leftOperand = [NSMutableString new];
+        self.rightOperand = [NSMutableString new];
+    }
+        
+        
 }
 @end

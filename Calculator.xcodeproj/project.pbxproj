@@ -20,7 +20,6 @@
 		67E94B0D175568DE00758BA3 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67E94B0B175568DE00758BA3 /* MainStoryboard.storyboard */; };
 		67E94B10175568DE00758BA3 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67E94B0F175568DE00758BA3 /* MainViewController.m */; };
 		67E94B13175568DE00758BA3 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67E94B12175568DE00758BA3 /* FlipsideViewController.m */; };
-		67E94B201755704E00758BA3 /* CalculatorButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 67E94B1F1755704E00758BA3 /* CalculatorButtons.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,8 +42,6 @@
 		67E94B0F175568DE00758BA3 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		67E94B11175568DE00758BA3 /* FlipsideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlipsideViewController.h; sourceTree = "<group>"; };
 		67E94B12175568DE00758BA3 /* FlipsideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlipsideViewController.m; sourceTree = "<group>"; };
-		67E94B1E1755704E00758BA3 /* CalculatorButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalculatorButtons.h; sourceTree = "<group>"; };
-		67E94B1F1755704E00758BA3 /* CalculatorButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalculatorButtons.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,8 +128,6 @@
 		67E94B1D17556CBC00758BA3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				67E94B1E1755704E00758BA3 /* CalculatorButtons.h */,
-				67E94B1F1755704E00758BA3 /* CalculatorButtons.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -207,7 +202,6 @@
 				67E94B04175568DE00758BA3 /* AppDelegate.m in Sources */,
 				67E94B10175568DE00758BA3 /* MainViewController.m in Sources */,
 				67E94B13175568DE00758BA3 /* FlipsideViewController.m in Sources */,
-				67E94B201755704E00758BA3 /* CalculatorButtons.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
