@@ -25,6 +25,9 @@ typedef NS_ENUM(NSInteger, OperatorType){
 @property (nonatomic, assign) BOOL hasTappedEqualButton;
 @property (nonatomic, assign) NSInteger memoryValue;
 @property (nonatomic, assign) BOOL hasNumberButtonTapped;
+@property (nonatomic, assign) NSMutableString *totalValue;
+@property (nonatomic, assign) BOOL hasDividedByZero;
+
 
 @end
 
@@ -97,11 +100,12 @@ typedef NS_ENUM(NSInteger, OperatorType){
             total = leftNumber - rightNumber;
             break;
         case OperatorTypeDivide:
-            if (rightNumber!=0) {
-               total = leftNumber / rightNumber;
-            } else {
-                self.outputTextField.text = @"Error";
+            if( rightNumber == 0){
+                self.hasDividedByZero = YES;
+            }else{
+                total = leftNumber / rightNumber;
             }
+        
             break;
         case OperatorTypeMultiply:
             total = leftNumber * rightNumber;
@@ -110,9 +114,13 @@ typedef NS_ENUM(NSInteger, OperatorType){
             }
             break;
     }
-    
-    self.outputTextField.text = [NSString stringWithFormat:@"%i", total];
+    if (self.hasDividedByZero) {
+        self.outputTextField.text = @"Error";
+    }else{
+        self.outputTextField.text = [NSString stringWithFormat:@"%i", total];
+    }
     self.leftOperand = [NSMutableString stringWithString:self.outputTextField.text];
+    self.hasTappedEqualButton = YES;
 }
 
 - (void)configureOperator:(OperatorType)operatorType {
@@ -133,13 +141,15 @@ typedef NS_ENUM(NSInteger, OperatorType){
 }
 
 - (IBAction)multiplybutton:(id)sender {
-     NSLog(@"X" );
-     [self configureOperator:OperatorTypeMultiply];
+    NSLog(@"X" );
+    [self configureOperator:OperatorTypeMultiply];
 }
 
 - (IBAction)divideButton:(id)sender {
      NSLog(@"/");
      [self configureOperator:OperatorTypeDivide];
+\
+    
 }
 
 - (IBAction)plusMinusButton:(id)sender {
